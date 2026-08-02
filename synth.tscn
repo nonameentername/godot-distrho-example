@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://db0cea7kc6uq1"]
+
+[ext_resource type="Script" uid="uid://bdlckj0vmn1rf" path="res://synth.gd" id="1_8kngq"]
+
+[sub_resource type="AudioStreamCsound" id="AudioStreamCsound_jkhly"]
+
+[node name="Synth" type="Node2D" unique_id=91559120]
+script = ExtResource("1_8kngq")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1508077817]
+stream = SubResource("AudioStreamCsound_jkhly")
+autoplay = true

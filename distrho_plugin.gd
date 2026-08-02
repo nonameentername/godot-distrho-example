@@ -1,0 +1,78 @@
+extends Node2D
+
+@onready
+var synth: Synth = $Synth
+
+var default_channel: int = 0
+var default_note: int = 64
+var default_velocity: int = 90
+
+
+func _ready() -> void:
+	print("godot-distrho version: ", DistrhoPluginServer.get_version(), " build: ", DistrhoPluginServer.get_build())
+
+	DistrhoPluginServer.parameter_changed.connect(_on_parameter_changed)
+	DistrhoPluginServer.state_changed.connect(_on_state_changed)
+	DistrhoPluginServer.midi_event.connect(_on_midi_event)
+	DistrhoPluginServer.midi_note_on.connect(_on_midi_note_on)
+	DistrhoPluginServer.midi_note_off.connect(_on_midi_note_off)
+	DistrhoPluginServer.midi_cc.connect(_on_midi_cc)
+	DistrhoPluginServer.midi_program_change.connect(_on_midi_program_change)
+	DistrhoPluginServer.load_program.connect(_on_load_program)
+
+
+func _on_parameter_changed(index: int, value: float) -> void:
+	print("Plugin: Parameter Changed: index: ", index, " value: ", value)
+
+
+func _on_state_changed(key: String, value: String) -> void:
+	print("Plugin: State Changed: key: ", key, " value: ", value)
+
+
+func _on_midi_event(midi_event: DistrhoMidiEvent) -> void:
+	print(
+		"MIDI Event: channel: ",
+		midi_event.channel,
+		" status: ",
+		midi_event.status,
+		" data1: ",
+		midi_event.data1,
+		" data2: ",
+		midi_event.data2,
+		" frame: ",
+		midi_event.frame
+	)
+	DistrhoPluginServer.send_midi_event(midi_event)
+
+
+func _on_midi_note_on(channel: int, note: int, velocity: int, frame: int) -> void:
+	print(
+		"Note On: channel: ", channel, " note: ", note, " velocity: ", velocity, " frame: ", frame
+	)
+	synth.csound.note_on(channel, note, velocity)
+
+
+func _on_midi_note_off(channel: int, note: int, velocity: int, frame: int) -> void:
+	print(
+		"Note Off: channel: ", channel, " note: ", note, " velocity: ", velocity, " frame: ", frame
+	)
+	synth.csound.note_off(channel, note)
+
+
+func _on_midi_cc(channel: int, controller: int, value: int, frame: int) -> void:
+	print(
+		"CC: channel: ", channel, " controller: ", controller, " value: ", value, " frame: ", frame
+	)
+
+
+func _on_midi_program_change(channel: int, program: int, frame: int) -> void:
+	print("Program Change: channel: ", channel, " program: ", program, " frame: ", frame)
+
+
+func _on_load_program(index: int) -> void:
+	print("Plugin: Load Program: index: ", index)
+
+	if index == 0:
+		DistrhoPluginServer.set_parameter_value(0, 1)
+	elif index == 1:
+		DistrhoPluginServer.set_parameter_value(0, 0.5)

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cpayqle067xi2"]
+
+[ext_resource type="Script" uid="uid://uam015n35gn4" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://db0cea7kc6uq1" path="res://synth.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bctw36gvgan85" path="res://synth_ui.tscn" id="3_1bvp3"]
+
+[node name="Main" type="Node2D" unique_id=1866768994]
+script = ExtResource("1_ig7tw")
+
+[node name="Synth" parent="." unique_id=91559120 instance=ExtResource("2_h2yge")]
+
+[node name="SynthUI" parent="." unique_id=1517841607 instance=ExtResource("3_1bvp3")]
+
+[connection signal="note_off" from="SynthUI" to="Synth" method="note_off"]
+[connection signal="note_on" from="SynthUI" to="Synth" method="note_on"]

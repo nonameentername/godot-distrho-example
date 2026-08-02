@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c5gyclpyw0hf8"]
+
+[ext_resource type="Script" uid="uid://cv0qlnwh3wt7n" path="res://distrho_plugin.gd" id="1_ljmhy"]
+[ext_resource type="PackedScene" uid="uid://db0cea7kc6uq1" path="res://synth.tscn" id="2_qb22x"]
+
+[node name="DistrhoPlugin" type="Node2D" unique_id=736548250]
+script = ExtResource("1_ljmhy")
+
+[node name="Synth" parent="." unique_id=91559120 instance=ExtResource("2_qb22x")]

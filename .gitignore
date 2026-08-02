@@ -1,0 +1,17 @@
+*.o
+*.obj
+*.os
+*.so
+.cache
+.godot
+.mono
+.sconsign.dblite
+.vs
+addons/csound
+addons/distrho
+addons/synths
+build
+build-log.txt
+compile_commands.json
+.plugged
+distrho_plugin_info.json

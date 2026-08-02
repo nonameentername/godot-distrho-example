@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bctw36gvgan85"]
+
+[ext_resource type="Script" uid="uid://dyec2mqgntg4i" path="res://synth_ui.gd" id="1_xsrii"]
+
+[node name="SynthUI" type="Node2D" unique_id=1517841607]
+script = ExtResource("1_xsrii")
+
+[node name="ButtonOn" type="Button" parent="." unique_id=655051961]
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 192.0
+offset_bottom = 128.0
+text = "ON"
+
+[node name="ButtonOff" type="Button" parent="." unique_id=2129551389]
+offset_left = 256.0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 128.0
+text = "OFF"
+
+[connection signal="pressed" from="ButtonOn" to="." method="_on_button_on_pressed"]
+[connection signal="pressed" from="ButtonOff" to="." method="_on_button_off_pressed"]
