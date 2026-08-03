@@ -1,4 +1,4 @@
-[gd_resource type="AudioBusLayout" format=3 uid="uid://mc0fh25dieij"]
+[gd_resource type="AudioBusLayout" format=3 uid="uid://bw16niqeh6a2w"]
 
 [sub_resource type="AudioEffectSetDistrhoChannel" id="AudioEffectSetDistrhoChannel_j3pel"]
 resource_name = "SetDistrhoChannel"
