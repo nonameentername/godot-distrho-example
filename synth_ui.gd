@@ -2,7 +2,7 @@ extends Node2D
 
 
 var channel: int = 0
-var note: int = 64
+var note: int = 60
 var velocity: int = 90
 
 

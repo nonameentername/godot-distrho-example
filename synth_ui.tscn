@@ -1,23 +1,52 @@
 [gd_scene format=3 uid="uid://bctw36gvgan85"]
 
 [ext_resource type="Script" uid="uid://dyec2mqgntg4i" path="res://synth_ui.gd" id="1_xsrii"]
+[ext_resource type="Texture2D" uid="uid://c30c6sodobgu1" path="res://piano.svg" id="2_mex0s"]
 
 [node name="SynthUI" type="Node2D" unique_id=1517841607]
 script = ExtResource("1_xsrii")
 
+[node name="Label" type="Label" parent="." unique_id=1613392667]
+offset_left = 16.0
+offset_top = 24.0
+offset_right = 113.0
+offset_bottom = 47.0
+text = "SimpleSynth"
+
+[node name="C4Label" type="Label" parent="." unique_id=330250361]
+offset_left = 344.0
+offset_top = 280.0
+offset_right = 410.0
+offset_bottom = 329.0
+text = "C4
+"
+
 [node name="ButtonOn" type="Button" parent="." unique_id=655051961]
-offset_left = 64.0
-offset_top = 64.0
-offset_right = 192.0
-offset_bottom = 128.0
+offset_left = 384.0
+offset_top = 256.0
+offset_right = 512.0
+offset_bottom = 320.0
 text = "ON"
 
+[node name="C4Label2" type="Label" parent="." unique_id=750728260]
+offset_left = 600.0
+offset_top = 280.0
+offset_right = 666.0
+offset_bottom = 329.0
+text = "C4
+"
+
 [node name="ButtonOff" type="Button" parent="." unique_id=2129551389]
-offset_left = 256.0
-offset_top = 64.0
-offset_right = 384.0
-offset_bottom = 128.0
+offset_left = 640.0
+offset_top = 256.0
+offset_right = 768.0
+offset_bottom = 320.0
 text = "OFF"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=302749609]
+position = Vector2(576.75, 600)
+scale = Vector2(0.2647262, 0.1832062)
+texture = ExtResource("2_mex0s")
 
 [connection signal="pressed" from="ButtonOn" to="." method="_on_button_on_pressed"]
 [connection signal="pressed" from="ButtonOff" to="." method="_on_button_off_pressed"]

@@ -10,14 +10,12 @@ config_version=5
 
 [application]
 
-config/name="GodotDistrhoExample"
 run/main_scene="uid://b6dypp4qpoog8"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [audio]
 
-buses/default_bus_layout="uid://mc0fh25dieij"
 csound/hide_csound_logs=true
 
 [autoload]
@@ -32,7 +30,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/csound/plugin.cfg")
+enabled=PackedStringArray("res://addons/csound/plugin.cfg", "res://addons/distrho/plugin.cfg")
 
 [physics]
 
