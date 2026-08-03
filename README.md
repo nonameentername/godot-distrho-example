@@ -4,6 +4,10 @@ A really simple Godot project that uses [godot-distrho](https://github.com/nonam
 
 Currently works with **Godot 4.7 stable**.
 
+## Images
+
+![Simple Synth](./images/simple-synth.png)
+
 ## Build
 
 ### 1. Install the dependencies
