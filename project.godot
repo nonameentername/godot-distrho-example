@@ -16,6 +16,7 @@ config/icon="res://icon.svg"
 
 [audio]
 
+buses/default_bus_layout="uid://bw16niqeh6a2w"
 csound/hide_csound_logs=true
 
 [autoload]

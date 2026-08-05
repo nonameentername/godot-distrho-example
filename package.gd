@@ -2,9 +2,9 @@ extends "res://addons/godot-package/package.gd"
 
 
 func _requirements():
-	var distrho_version = "v0.1.0-beta.12"
+	var distrho_version = "v0.1.0-beta.14"
 
-	dependency("nonameentername/godot-csound", {"tag": "v0.1.0-beta.158"})
+	dependency("nonameentername/godot-csound", {"tag": "v0.1.0-beta.159"})
 	dependency("nonameentername/godot-distrho", {"tag": distrho_version})
 
 	for template in ["linux", "macos", "windows"]:
