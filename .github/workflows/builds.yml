@@ -35,6 +35,7 @@ jobs:
         run: |
           godot --headless -s package.gd install
           godot --headless --import
+          godot --headless --editor --quit-after 300
 
       - name: Export godot-distrho-example (LV2)
         run: |
