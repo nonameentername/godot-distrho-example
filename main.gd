@@ -5,8 +5,9 @@ var synth: Synth = $Synth
 
 
 func _ready() -> void:
-	OS.open_midi_inputs()
-	print(OS.get_connected_midi_inputs())
+	if AudioServer.get_driver_name() != "Distrho":
+		OS.open_midi_inputs()
+		print(OS.get_connected_midi_inputs())
 
 
 func _input(input_event):

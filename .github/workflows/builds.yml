@@ -1,0 +1,67 @@
+name: builds
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-build:
+    name: Linux/Ubuntu build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.0
+          use-dotnet: false
+          include-templates: true
+
+      - name: Install Dependencies
+        continue-on-error: true
+        run: |
+          godot --headless -s package.gd install
+          godot --headless --import
+          godot --headless --editor --quit-after 300
+
+      - name: Export godot-distrho-example (LV2)
+        run: |
+          godot --headless --export-debug "LinuxLV2"
+
+      - name: Export godot-distrho-example (VST3)
+        run: |
+          godot --headless --export-debug "LinuxVST3"
+
+      - name: Install pluginval
+        run: |
+          curl -sSL https://github.com/Tracktion/pluginval/releases/download/v1.0.4/pluginval_Linux.zip -o pluginval.zip
+          unzip -o pluginval.zip
+          rm -f pluginval.zip
+
+      - name: Verify LV2
+        run: |
+          ./pluginval --strictness-level 5 --skip-gui-tests build/linux/godot-distrho-example.lv2
+
+      - name: Verify VST3
+        run: |
+          ./pluginval --strictness-level 5 --skip-gui-tests build/linux/godot-distrho-example.vst3
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-artifacts
+          path: build/linux
