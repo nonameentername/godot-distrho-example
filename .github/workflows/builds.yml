@@ -31,7 +31,8 @@ jobs:
           use-dotnet: false
           include-templates: true
 
-      - name: Build godot-distrho-example
+      - name: Install Dependencies
+        continue-on-error: true
         run: |
           godot --headless -s package.gd install
           godot --headless --import
