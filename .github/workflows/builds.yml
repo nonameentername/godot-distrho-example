@@ -10,13 +10,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   linux-build:
     name: Linux/Ubuntu build
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        environment: [debug, release]
     steps:
       - name: Checkout source code
         uses: actions/checkout@v7
@@ -40,11 +42,11 @@ jobs:
 
       - name: Export godot-distrho-example (LV2)
         run: |
-          godot --headless --export-debug "LinuxLV2"
+          godot --headless --export-${{ matrix.environment }} "LinuxLV2"
 
       - name: Export godot-distrho-example (VST3)
         run: |
-          godot --headless --export-debug "LinuxVST3"
+          godot --headless --export-${{ matrix.environment }} "LinuxVST3"
 
       - name: Install pluginval
         run: |
@@ -63,5 +65,72 @@ jobs:
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: linux-artifacts
+          name: linux-artifacts-${{ matrix.environment }}
           path: build/linux
+
+  publish_artifacts:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    name: Publish Artifacts
+    runs-on: ubuntu-latest
+    needs: [linux-build]
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Download Linux artifacts (debug)
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-artifacts-debug
+          path: artifacts/linux-debug
+
+      - name: Download Linux artifacts (release)
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-artifacts-release
+          path: artifacts/linux-release
+
+      - name: Update minor version
+        id: tag
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DRY_RUN: true
+          RELEASE_BRANCHES: none
+
+      - name: Package LV2 debug artifact
+        working-directory: artifacts/linux-debug
+        run: |
+          zip -r godot-distrho_example_lv2_debug_${{ steps.tag.outputs.new_tag }}.zip godot-distrho-example.lv2
+
+      - name: Package VST3 debug artifact
+        working-directory: artifacts/linux-debug
+        run: |
+          zip -r godot-distrho_example_vst3_debug_${{ steps.tag.outputs.new_tag }}.zip godot-distrho-example.vst3
+
+      - name: Package LV2 release artifact
+        working-directory: artifacts/linux-release
+        run: |
+          zip -r godot-distrho_example_lv2_release_${{ steps.tag.outputs.new_tag }}.zip godot-distrho-example.lv2
+
+      - name: Package VST3 release artifact
+        working-directory: artifacts/linux-release
+        run: |
+          zip -r godot-distrho_example_vst3_release_${{ steps.tag.outputs.new_tag }}.zip godot-distrho-example.vst3
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ github.token }}
+          tag_name: ${{ steps.tag.outputs.new_tag }}
+          generate_release_notes: true
+          make_latest: true
+          preserve_order: true
+          files: |
+            artifacts/linux-debug/godot-distrho_example_lv2_debug_${{ steps.tag.outputs.new_tag }}.zip
+            artifacts/linux-debug/godot-distrho_example_vst3_debug_${{ steps.tag.outputs.new_tag }}.zip
+            artifacts/linux-release/godot-distrho_example_lv2_release_${{ steps.tag.outputs.new_tag }}.zip
+            artifacts/linux-release/godot-distrho_example_vst3_release_${{ steps.tag.outputs.new_tag }}.zip
