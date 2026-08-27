@@ -56,6 +56,8 @@ jobs:
     name: Verify Linux/Ubuntu build
     runs-on: ubuntu-latest
     needs: linux-build
+    container:
+      image: ubuntu:26.04
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -63,17 +65,10 @@ jobs:
           fetch-depth: 1
           submodules: recursive
 
-      - name: Setup Godot
-        uses: chickensoft-games/setup-godot@v2
-        with:
-          version: 4.7.0
-          use-dotnet: false
-          include-templates: true
-
-      - name: Godot import
-        continue-on-error: true
+      - name: Install verification dependencies
         run: |
-          godot --headless --import
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl unzip file libasound2t64 libfontconfig1 libfreetype6 libpng16-16
 
       - name: Download Linux artifacts
         uses: actions/download-artifact@v4
