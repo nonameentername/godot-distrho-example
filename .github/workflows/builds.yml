@@ -62,11 +62,15 @@ jobs:
         run: |
           ./pluginval --strictness-level 5 --skip-gui-tests build/linux/godot-distrho-example.vst3
 
+      - name: Package Linux artifacts
+        run: |
+          tar -czf linux-artifacts-${{ matrix.environment }}.tar.gz -C build/linux .
+
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v4
         with:
           name: linux-artifacts-${{ matrix.environment }}
-          path: build/linux
+          path: linux-artifacts-${{ matrix.environment }}.tar.gz
 
   publish_artifacts:
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -84,13 +88,23 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: linux-artifacts-debug
-          path: artifacts/linux-debug
+          path: artifacts/download-debug
 
       - name: Download Linux artifacts (release)
         uses: actions/download-artifact@v4
         with:
           name: linux-artifacts-release
-          path: artifacts/linux-release
+          path: artifacts/download-release
+
+      - name: Extract Linux artifacts (debug)
+        run: |
+          mkdir -p artifacts/linux-debug
+          tar -xzf artifacts/download-debug/linux-artifacts-debug.tar.gz -C artifacts/linux-debug
+
+      - name: Extract Linux artifacts (release)
+        run: |
+          mkdir -p artifacts/linux-release
+          tar -xzf artifacts/download-release/linux-artifacts-release.tar.gz -C artifacts/linux-release
 
       - name: Update minor version
         id: tag
